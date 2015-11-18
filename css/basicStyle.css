@@ -1,0 +1,178 @@
+/*BASIC STYLES
+------------------------------------------------*/
+html{
+    overflow-y: scroll;
+    overflow-x: hidden; 
+    height: 100% !important;   
+}
+body { 
+    font-family: 'Open Sans',sans-serif,Arial; 
+    font-size: 16px; 
+    color: #6D6D6D;
+    background-color: #F5F5F5; 
+    //font-weight: 300;
+    height:100%;
+}
+a { 
+    text-decoration: none;
+    outline:none;
+}
+a:hover {text-decoration: none;
+ }
+.clear { clear: both; }
+.ui-tabs-hide { display: none; }
+br.clear { margin: 0px; padding: 0px; }
+hr{margin: 10px 0;}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family:'Montserrat',sans-serif,Arial; padding-bottom: 5px; 
+    color: #373432; 
+    line-height: 1em; 
+    font-weight: normal;
+ }
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: #111; }
+/**/
+h1 { font-size: 30px; }
+h2 { font-size: 24px; }
+h3 { font-size: 22px; }
+h4 { font-size: 18px; }
+h5 { font-size: 16px; }
+h6 { font-size: 14px; }
+
+p { 
+    padding-bottom: 10px;
+    line-height: 25px; 
+}
+strong { font-weight: bold; color: #1c1c1c; }
+cite, em, i { font-style: italic; }
+pre, code { font-family: Courier New, monospace; margin-bottom: 10px; }
+ins { text-decoration: none; }
+sup, sub { height: 0; line-height: 1; position: relative; vertical-align: baseline; }
+sup { bottom: 0.8em; }
+sub { top: 0.3em; }
+dl { margin: 0 0 1.5em 0; }
+dl dt { font-weight: bold; }
+dd  { margin-left: 1.5em;}
+blockquote  { margin: 1.5em; padding: 1em; color: #666666; background: #e6e6e6; font-style: italic; border: 1px solid #dcdcdc; }
+    blockquote p { padding-bottom: 0px; }
+
+/*input[type=text],input.text, input.title, textarea, select { background-color:#fff; border:1px solid #bbb; padding: 2px; color: #4e4e4e; }
+input[type=text]:focus, input.text:focus, input.title:focus, textarea:focus, select:focus { border-color:#2D3940; color: #3e3e3e; }
+input[type=text], input.text, input.title, textarea, select { margin:0.5em 0; }
+textarea { padding: 4px; }*/
+
+.clearfix:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+ul, ol{margin: 0px;}
+a:focus{
+    outline: none;
+}
+.left {
+    float: left;
+}
+.right{
+    float: right;
+}
+blockquote{
+    font-style: normal;
+}
+
+/*GAmbs*/
+.card{
+     -webkit-transition: 1s;
+    -moz-transition: 1s;
+    -o-transition: 1s;
+    -ms-transition: 1s;
+    transition: 1s; 
+}
+
+.waves-effect {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  vertical-align: middle;
+  z-index: 1;
+  will-change: opacity, transform;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  color: #FFF !important;
+}
+
+.parallax-container h5{
+  color: #FFF;
+  font-size: 35px;
+  font-family: roboto;
+  font-weight: 400;
+}
+
+.hoverable:hover {
+  transition: box-shadow .25s;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.material-icons {
+  font-size: 21px ;
+}
+
+
+/*para jogar conteudo para o lado*/
+#page-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+/*em breve portfolio*/
+#navs li.embreve:hover {
+    background-color: rgb(255, 58, 58) !important;
+  opacity: 0.7;
+  filter: alpha(opacity=80);
+}
+#navs li.embreve:hover a {
+color: white;
+}
+
+/* ======================================================== */
+/*                    Medias Querys                        */
+/* ====================================================== 
+@media only screen and (max-width : 600px) {
+    .toast {
+      width: 100%;
+      -webkit-border-radius: 0px;
+      -moz-border-radius: 0px;
+      border-radius: 0px;
+      background-clip: padding-box; } }
+  @media only screen and (min-width : 601px) and (max-width : 992px) {
+    .toast {
+      float: left; } }*/
+    @media only screen and (max-width : 993px) {
+       .parallax-container .container {
+          padding: 0px;
+        }
+        .parallax-container.parallax-small .section {
+            top: 20%;
+        }
+        #index-banner .container {
+            padding: 100px 0;
+        }
+
+        /*sumir com gaivota*/
+        #contato .card {
+              background: none;
+        }
+
+        .timeline {
+          margin-left: 0;
+        }
+    }
