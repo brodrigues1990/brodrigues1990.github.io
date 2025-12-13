@@ -51,40 +51,46 @@ export function Navigation() {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-colors ${
+      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-all ${
         theme === 'dark'
-          ? 'bg-gray-900/80 border-gray-800'
-          : 'bg-white/80 border-gray-200'
+          ? 'bg-black/50'
+          : 'bg-white/50'
       }`}
     >
-      <div className="max-w-6xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
-        <h1
-          className="text-2xl font-bold bg-clip-text text-transparent"
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
+        <a 
+          href="#" 
+          className="text-xl font-bold tracking-tight"
           style={{
-            backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+            color: theme === 'dark' ? '#ffffff' : '#000000',
           }}
         >
           Portfolio
-        </h1>
+        </a>
 
-        <div className="flex items-center gap-6">
-          <ul className="hidden md:flex gap-8">
-            {['Início', 'Projetos', 'Stack', 'Contato'].map((item) => (
-              <li key={item}>
+        <div className="flex items-center gap-8">
+          <ul className="hidden md:flex gap-8 items-center">
+            {[
+              { label: 'Início', href: '#inicio' },
+              { label: 'Projetos', href: '#projetos' },
+              { label: 'Stack', href: '#stack' },
+              { label: 'Contato', href: '#contato' }
+            ].map((item) => (
+              <li key={item.label}>
                 <a
-                  href={`#${item.toLowerCase()}`}
-                  className="transition-colors font-medium"
+                  href={item.href}
+                  className="text-sm transition-colors font-normal"
                   style={{
-                    color: theme === 'dark' ? '#d1d5db' : '#4b5563',
+                    color: theme === 'dark' ? '#a1a1aa' : '#71717a',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = colors.primary;
+                    e.currentTarget.style.color = theme === 'dark' ? '#ffffff' : '#000000';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = theme === 'dark' ? '#d1d5db' : '#4b5563';
+                    e.currentTarget.style.color = theme === 'dark' ? '#a1a1aa' : '#71717a';
                   }}
                 >
-                  {item}
+                  {item.label}
                 </a>
               </li>
             ))}
@@ -93,10 +99,13 @@ export function Navigation() {
           <ThemeSwitch />
 
           <button
-            className="px-6 py-2 rounded-lg text-white font-bold hover:shadow-lg transition-all"
+            className="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105"
             style={{
-              backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
-              boxShadow: `0 0 20px ${colors.primary}50`,
+              backgroundColor: theme === 'dark' ? '#ffffff' : '#000000',
+              color: theme === 'dark' ? '#000000' : '#ffffff',
+            }}
+            onClick={() => {
+              document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
             Contato
