@@ -3,12 +3,14 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTheme } from '@/contexts/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function TimelineSection() {
   const timelineRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -75,13 +77,23 @@ export function TimelineSection() {
   return (
     <section ref={timelineRef} className="py-20 px-4 md:px-8 relative">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
+        <h2
+          className="text-4xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+          }}
+        >
           Linha do Tempo
         </h2>
 
         <div className="relative">
           {/* Vertical line */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500/20 to-pink-500/20 transform -translate-x-1/2"></div>
+          <div
+            className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 transform -translate-x-1/2"
+            style={{
+              background: `linear-gradient(to bottom, ${colors.primary}20, ${colors.secondary}20)`,
+            }}
+          ></div>
 
           <div className="space-y-12">
             {experiences.map((exp, index) => (
@@ -97,17 +109,29 @@ export function TimelineSection() {
                 <div className="flex-1 hidden md:block"></div>
 
                 <div className="flex justify-center">
-                  <div className="w-4 h-4 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 ring-8 ring-gray-900"></div>
+                  <div
+                    className="w-4 h-4 rounded-full ring-8"
+                    style={{
+                      background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+                      ringColor: colors.background,
+                    }}
+                  ></div>
                 </div>
 
-                <div className="flex-1 p-6 rounded-lg border border-orange-500/30 bg-gradient-to-br from-orange-900/10 to-orange-800/5">
-                  <div className="text-sm font-bold text-orange-400 mb-2">
+                <div
+                  className="flex-1 p-6 rounded-lg border"
+                  style={{
+                    borderColor: `${colors.primary}30`,
+                    background: `linear-gradient(to bottom right, ${colors.primary}10, ${colors.accent}05)`,
+                  }}
+                >
+                  <div className="text-sm font-bold mb-2" style={{ color: colors.primary }}>
                     {exp.year}
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">
+                  <h3 className="text-xl font-bold mb-2" style={{ color: colors.foreground }}>
                     {exp.title}
                   </h3>
-                  <p className="text-gray-400">{exp.description}</p>
+                  <p style={{ color: colors.muted }}>{exp.description}</p>
                 </div>
               </div>
             ))}

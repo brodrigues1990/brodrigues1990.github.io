@@ -2,7 +2,6 @@
   "name": "portfolio-br-2026",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "yarn@4.0.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.4.2",
     "gsap": "^3.12.0",
     "lenis": "^1.1.0",
     "next": "16.0.10",

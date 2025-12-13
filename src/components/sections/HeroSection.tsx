@@ -2,37 +2,38 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import BrTag3D from '@/components/ui/BrTag3D';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export function HeroSection() {
   const textRef = useRef<HTMLDivElement>(null);
   const subtitleRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLAnchorElement>(null);
+  const { theme, colors } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(textRef.current, {
         opacity: 0,
-        y: 100,
-        duration: 1,
+        y: 60,
+        duration: 1.2,
         ease: 'power3.out',
       });
 
       gsap.from(subtitleRef.current, {
         opacity: 0,
-        y: 50,
+        y: 30,
         duration: 1,
         delay: 0.3,
         ease: 'power3.out',
       });
 
-      gsap.to(textRef.current, {
-        y: 0,
-        scrollTrigger: {
-          trigger: textRef.current,
-          start: 'top center',
-          end: 'bottom center',
-          scrub: 1,
-          markers: false,
-        },
+      gsap.from(buttonRef.current, {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        delay: 0.5,
+        ease: 'power3.out',
       });
     });
 
@@ -40,42 +41,97 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-4 md:px-8 relative overflow-hidden pt-20">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-40 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-      </div>
+    <section
+      className="min-h-screen flex flex-col items-center justify-between px-4 md:px-8 relative overflow-hidden transition-colors"
+      style={{ backgroundColor: colors.background }}
+    >
+      {/* Top Section - Text */}
+      <div className="flex-1 flex flex-col items-center justify-center pt-32 pb-8">
+        <div ref={textRef} className="text-center mb-6">
+          <h1
+            className="text-4xl md:text-6xl lg:text-7xl font-light leading-tight tracking-tight"
+            style={{ color: colors.foreground }}
+          >
+            When intelligence reaches out
+            <br />
+            <span className="italic">to instinct,</span> the future takes shape
+          </h1>
+        </div>
 
-      <div ref={textRef} className="text-center mb-8">
-        <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 bg-clip-text text-transparent mb-6">
-          Desenvolvedor Criativo
-        </h1>
-        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
-          Seção Principal Imersiva em 3D
-        </p>
-      </div>
+        <div ref={subtitleRef} className="text-center max-w-xl mb-8">
+          <p className="text-sm md:text-base leading-relaxed" style={{ color: colors.muted }}>
+            an unlikely alliance - where human intuition
+            <br />
+            and algorithmic precision move as one
+          </p>
+        </div>
 
-      <div ref={subtitleRef} className="text-center max-w-2xl">
-        <p className="text-gray-300 text-base md:text-lg leading-relaxed">
-          Causa um forte impacto inicial com um modelo de sala 3D, partículas e texto animado.
-        </p>
-      </div>
-
-      <div className="absolute bottom-10 animate-bounce">
-        <svg
-          className="w-6 h-6 text-purple-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+        <a
+          ref={buttonRef}
+          href="#showcase"
+          className="inline-flex items-center gap-2 px-6 py-3 border rounded-full text-sm transition-all duration-300 group"
+          style={{
+            borderColor: colors.muted,
+            color: colors.foreground,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = colors.foreground;
+            e.currentTarget.style.color = colors.background;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = colors.foreground;
+          }}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+          See it in action
+          <svg
+            className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
+        </a>
+      </div>
+
+      {/* Center Section - 3D Element */}
+      <div className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-visible">
+        {/* Glow effect behind the 3D object */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div
+            className="w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl"
+            style={{
+              background: `radial-gradient(circle, ${colors.primary}30, ${colors.secondary}10, transparent)`,
+            }}
+          ></div>
+        </div>
+        
+        {/* 3D <br> Tag - Centered and rotating */}
+        <div className="w-full h-full max-w-2xl">
+          <BrTag3D
+            fontSize={2.5}
+            color={colors.primary}
+            metalness={0.95}
+            roughness={0.1}
+            floatIntensity={0.08}
+            rotationSpeed={0.5}
           />
-        </svg>
+        </div>
+      </div>
+
+      {/* Bottom decorative icons */}
+      <div className="flex items-center justify-center gap-4 pb-8" style={{ color: colors.muted }}>
+        <span className="text-xs tracking-widest">⊹</span>
+        <span className="text-xs tracking-widest">◫</span>
+        <span className="text-xs tracking-widest">⊹</span>
+        <span className="text-xs tracking-widest">◎</span>
+        <span className="text-xs tracking-widest">✓</span>
       </div>
     </section>
   );

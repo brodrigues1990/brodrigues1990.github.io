@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTheme } from '@/contexts/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,6 +11,7 @@ export function ContactSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -52,23 +54,40 @@ export function ContactSection() {
   return (
     <section ref={containerRef} className="py-20 px-4 md:px-8 relative">
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+        <h2
+          className="text-4xl md:text-5xl font-bold text-center mb-4 bg-clip-text text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+          }}
+        >
           Seção de Contato
         </h2>
-        <p className="text-center text-gray-400 mb-12">
+        <p className="text-center mb-12" style={{ color: colors.muted }}>
           Envie uma mensagem e entraremos em contato em breve
         </p>
 
         {isSubmitted ? (
-          <div ref={formRef} className="text-center p-12 rounded-lg border border-green-500/30 bg-gradient-to-br from-green-900/20 to-green-800/10">
+          <div
+            ref={formRef}
+            className="text-center p-12 rounded-lg border"
+            style={{
+              borderColor: `${colors.primary}30`,
+              background: `linear-gradient(to bottom right, ${colors.primary}20, ${colors.accent}10)`,
+            }}
+          >
             <div className="text-5xl mb-4">✅</div>
-            <h3 className="text-2xl font-bold text-white mb-2">Mensagem Enviada!</h3>
-            <p className="text-gray-400 mb-6">
+            <h3 className="text-2xl font-bold mb-2" style={{ color: colors.foreground }}>
+              Mensagem Enviada!
+            </h3>
+            <p className="mb-6" style={{ color: colors.muted }}>
               Obrigado por entrar em contato. Responderemos em breve.
             </p>
             <button
               onClick={() => setIsSubmitted(false)}
-              className="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold hover:shadow-lg hover:shadow-cyan-500/50 transition-all"
+              className="px-6 py-2 rounded-lg text-white font-bold hover:shadow-lg transition-all"
+              style={{
+                backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+              }}
             >
               Enviar Outra Mensagem
             </button>
@@ -77,41 +96,69 @@ export function ContactSection() {
           <form
             ref={formRef}
             onSubmit={handleSubmit}
-            className="space-y-6 p-8 rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-900/10 to-blue-900/10"
+            className="space-y-6 p-8 rounded-lg border"
+            style={{
+              borderColor: `${colors.primary}30`,
+              background: `linear-gradient(to bottom right, ${colors.primary}10, ${colors.secondary}10)`,
+            }}
           >
             <div>
-              <label className="block text-white font-bold mb-2">Nome</label>
+              <label className="block font-bold mb-2" style={{ color: colors.foreground }}>
+                Nome
+              </label>
               <input
                 type="text"
                 required
-                className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white focus:border-cyan-500 focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors"
+                style={{
+                  backgroundColor: `${colors.background}80`,
+                  borderColor: colors.muted,
+                  color: colors.foreground,
+                }}
                 placeholder="Seu nome"
               />
             </div>
 
             <div>
-              <label className="block text-white font-bold mb-2">Email</label>
+              <label className="block font-bold mb-2" style={{ color: colors.foreground }}>
+                Email
+              </label>
               <input
                 type="email"
                 required
-                className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white focus:border-cyan-500 focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors"
+                style={{
+                  backgroundColor: `${colors.background}80`,
+                  borderColor: colors.muted,
+                  color: colors.foreground,
+                }}
                 placeholder="seu@email.com"
               />
             </div>
 
             <div>
-              <label className="block text-white font-bold mb-2">Mensagem</label>
+              <label className="block font-bold mb-2" style={{ color: colors.foreground }}>
+                Mensagem
+              </label>
               <textarea
                 required
                 rows={5}
-                className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white focus:border-cyan-500 focus:outline-none transition-colors resize-none"
+                className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors resize-none"
+                style={{
+                  backgroundColor: `${colors.background}80`,
+                  borderColor: colors.muted,
+                  color: colors.foreground,
+                }}
                 placeholder="Sua mensagem aqui..."
               ></textarea>
             </div>
 
             <button
               type="submit"
-              className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold hover:shadow-lg hover:shadow-cyan-500/50 transition-all transform hover:scale-105"
+              className="w-full px-6 py-3 rounded-lg text-white font-bold hover:shadow-lg transition-all transform hover:scale-105"
+              style={{
+                backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+              }}
             >
               Enviar Mensagem
             </button>

@@ -3,12 +3,14 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTheme } from '@/contexts/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function ShowcaseSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -66,7 +68,12 @@ export function ShowcaseSection() {
   return (
     <section ref={containerRef} className="py-20 px-4 md:px-8 relative">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+        <h2
+          className="text-4xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+          }}
+        >
           Seção de Destaque
         </h2>
 
@@ -77,18 +84,38 @@ export function ShowcaseSection() {
               ref={(el) => {
                 cardRefs.current[index] = el;
               }}
-              className="group relative p-8 rounded-xl border border-green-500/30 bg-gradient-to-br from-green-900/10 to-green-800/5 hover:border-green-400/60 transition-colors duration-300"
+              className="group relative p-8 rounded-xl border transition-all duration-300"
+              style={{
+                borderColor: `${colors.primary}30`,
+                background: `linear-gradient(to bottom right, ${colors.primary}10, ${colors.accent}05)`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `${colors.primary}60`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `${colors.primary}30`;
+              }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div
+                className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  background: `linear-gradient(to bottom right, ${colors.primary}05, transparent)`,
+                }}
+              ></div>
 
               <div className="relative z-10">
                 <div className="text-4xl mb-4">{card.icon}</div>
-                <h3 className="text-xl font-bold text-white mb-3">{card.title}</h3>
-                <p className="text-gray-400 group-hover:text-gray-300 transition-colors">
+                <h3 className="text-xl font-bold mb-3" style={{ color: colors.foreground }}>
+                  {card.title}
+                </h3>
+                <p className="transition-colors" style={{ color: colors.muted }}>
                   {card.description}
                 </p>
 
-                <div className="mt-6 inline-flex items-center gap-2 text-green-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div
+                  className="mt-6 inline-flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ color: colors.primary }}
+                >
                   Saiba mais
                   <svg
                     className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"

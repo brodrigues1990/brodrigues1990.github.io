@@ -3,11 +3,13 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTheme } from '@/contexts/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function LogosSection() {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const carousel = carouselRef.current;
@@ -41,7 +43,12 @@ export function LogosSection() {
   return (
     <section className="py-20 px-4 md:px-8 relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+        <h2
+          className="text-4xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+          }}
+        >
           Carrossel de Logos
         </h2>
 

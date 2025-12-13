@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ThemeSwitch } from './ThemeSwitch';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export function Navigation() {
   const navRef = useRef<HTMLNavElement>(null);
+  const { theme, colors } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -48,20 +51,38 @@ export function Navigation() {
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-gray-900/80 border-b border-gray-800"
+      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-colors ${
+        theme === 'dark'
+          ? 'bg-gray-900/80 border-gray-800'
+          : 'bg-white/80 border-gray-200'
+      }`}
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+        <h1
+          className="text-2xl font-bold bg-clip-text text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+          }}
+        >
           Portfolio
         </h1>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6">
           <ul className="hidden md:flex gap-8">
             {['Início', 'Projetos', 'Stack', 'Contato'].map((item) => (
               <li key={item}>
                 <a
                   href={`#${item.toLowerCase()}`}
-                  className="text-gray-300 hover:text-purple-400 transition-colors font-medium"
+                  className="transition-colors font-medium"
+                  style={{
+                    color: theme === 'dark' ? '#d1d5db' : '#4b5563',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = colors.primary;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = theme === 'dark' ? '#d1d5db' : '#4b5563';
+                  }}
                 >
                   {item}
                 </a>
@@ -69,7 +90,15 @@ export function Navigation() {
             ))}
           </ul>
 
-          <button className="px-6 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+          <ThemeSwitch />
+
+          <button
+            className="px-6 py-2 rounded-lg text-white font-bold hover:shadow-lg transition-all"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+              boxShadow: `0 0 20px ${colors.primary}50`,
+            }}
+          >
             Contato
           </button>
         </div>

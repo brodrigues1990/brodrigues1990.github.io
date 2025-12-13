@@ -3,12 +3,14 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTheme } from '@/contexts/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function TechStackSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -76,10 +78,15 @@ export function TechStackSection() {
   return (
     <section ref={containerRef} className="py-20 px-4 md:px-8 relative">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+        <h2
+          className="text-4xl md:text-5xl font-bold text-center mb-4 bg-clip-text text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+          }}
+        >
           Tech Stack
         </h2>
-        <p className="text-center text-gray-400 mb-16">
+        <p className="text-center mb-16" style={{ color: colors.muted }}>
           Ferramentas e tecnologias utilizadas
         </p>
 
@@ -93,16 +100,21 @@ export function TechStackSection() {
               className="flex flex-col items-center gap-4 group cursor-pointer"
             >
               <div className="relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl"></div>
+                <div
+                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl"
+                  style={{
+                    background: `linear-gradient(to bottom right, ${colors.primary}20, ${colors.secondary}20)`,
+                  }}
+                ></div>
                 <div className="relative text-4xl md:text-5xl transform group-hover:scale-110 transition-transform">
                   {tech.icon}
                 </div>
               </div>
               <div className="text-center">
-                <h3 className="font-bold text-white text-sm md:text-base">
+                <h3 className="font-bold text-sm md:text-base" style={{ color: colors.foreground }}>
                   {tech.name}
                 </h3>
-                <p className="text-xs text-gray-500 group-hover:text-gray-400">
+                <p className="text-xs" style={{ color: colors.muted }}>
                   {tech.description}
                 </p>
               </div>
