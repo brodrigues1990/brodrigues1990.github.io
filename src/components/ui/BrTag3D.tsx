@@ -13,6 +13,7 @@ interface SpinningTextProps {
 
 function SpinningText({ font, color }: SpinningTextProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const tiltAngle = THREE.MathUtils.degToRad(20); // 20 degrees tilt
 
   // Infinite rotation animation on its own axis
   useFrame((_, delta) => {
@@ -22,7 +23,7 @@ function SpinningText({ font, color }: SpinningTextProps) {
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} rotation={[tiltAngle, 0, 0]}>
       <Center>
         <Text3D
           font={font}
@@ -36,10 +37,19 @@ function SpinningText({ font, color }: SpinningTextProps) {
           bevelSegments={5}
         >
           {'<Br>'}
-          <meshStandardMaterial
+          {/* Glassmorphism effect with transparency */}
+          <meshPhysicalMaterial
             color={color}
-            metalness={0.8}
-            roughness={0.2}
+            metalness={0.1}
+            roughness={0.05}
+            transmission={0.6}
+            thickness={0.5}
+            transparent
+            opacity={0.85}
+            envMapIntensity={1}
+            clearcoat={1}
+            clearcoatRoughness={0.1}
+            ior={1.5}
           />
         </Text3D>
       </Center>

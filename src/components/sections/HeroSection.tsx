@@ -60,10 +60,10 @@ export function HeroSection() {
       </div>
 
       {/* Top Section - Text */}
-      {/* <div className="flex-1 flex flex-col items-center justify-center pt-32 pb-8 relative z-10">
+      {/* <div className="flex-1 flex flex-col items-center justify-start pt-32 pb-8 relative z-10">
         <div ref={textRef} className="text-center mb-6">
           <h1
-            className="text-4xl md:text-6xl lg:text-7xl font-light leading-tight tracking-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight"
             style={{ color: colors.foreground }}
           >
             When intelligence reaches out
@@ -114,9 +114,9 @@ export function HeroSection() {
         </a>
       </div> */}
 
-      {/* Center Section - 3D Element (Over the hands) */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-full h-[50vh] md:h-[60vh] max-w-2xl">
+      {/* Center Section - 3D Element (Below the text) */}
+      <div className="absolute inset-0 flex items-end justify-center pointer-events-none pb-24">
+        <div className="relative w-full h-[60vh] md:h-[70vh] max-w-3xl">
           {/* Glow effect behind the 3D object */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div
@@ -130,7 +130,7 @@ export function HeroSection() {
           {/* 3D <br> Tag - Centered and rotating */}
           <div className="w-full h-full pointer-events-auto">
             <BrTag3D
-              fontSize={2.5}
+              fontSize={3.5}
               color={colors.primary}
               metalness={0.95}
               roughness={0.1}

@@ -57,17 +57,7 @@ export function Navigation() {
           : 'bg-white/50'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
-        <a 
-          href="#" 
-          className="text-xl font-bold tracking-tight"
-          style={{
-            color: theme === 'dark' ? '#ffffff' : '#000000',
-          }}
-        >
-          Portfolio
-        </a>
-
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-center">
         <div className="flex items-center gap-8">
           <ul className="hidden md:flex gap-8 items-center">
             {[
