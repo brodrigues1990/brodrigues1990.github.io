@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import Image from 'next/image';
 import BrTag3D from '@/components/ui/BrTag3D';
 import { useTheme } from '@/contexts/ThemeContext';
+import adamsCreation from '@/assets/adamsCreationNoBg.png';
 
 export function HeroSection() {
   const textRef = useRef<HTMLDivElement>(null);
@@ -45,8 +47,20 @@ export function HeroSection() {
       className="min-h-screen flex flex-col items-center justify-between px-4 md:px-8 relative overflow-hidden transition-colors"
       style={{ backgroundColor: colors.background }}
     >
+      {/* Background hands image */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none -top-[320px]">
+        <Image
+          src={adamsCreation}
+          alt="Adam's Creation Hands"
+          fill
+          className="object-cover"
+          priority
+          // style={{ filter: theme === 'dark' ? 'brightness(0.7)' : 'brightness(1.2)' }}
+        />
+      </div>
+
       {/* Top Section - Text */}
-      <div className="flex-1 flex flex-col items-center justify-center pt-32 pb-8">
+      {/* <div className="flex-1 flex flex-col items-center justify-center pt-32 pb-8 relative z-10">
         <div ref={textRef} className="text-center mb-6">
           <h1
             className="text-4xl md:text-6xl lg:text-7xl font-light leading-tight tracking-tight"
@@ -98,41 +112,43 @@ export function HeroSection() {
             />
           </svg>
         </a>
-      </div>
+      </div> */}
 
-      {/* Center Section - 3D Element */}
-      <div className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-visible">
-        {/* Glow effect behind the 3D object */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div
-            className="w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl"
-            style={{
-              background: `radial-gradient(circle, ${colors.primary}30, ${colors.secondary}10, transparent)`,
-            }}
-          ></div>
-        </div>
-        
-        {/* 3D <br> Tag - Centered and rotating */}
-        <div className="w-full h-full max-w-2xl">
-          <BrTag3D
-            fontSize={2.5}
-            color={colors.primary}
-            metalness={0.95}
-            roughness={0.1}
-            floatIntensity={0.08}
-            rotationSpeed={0.5}
-          />
+      {/* Center Section - 3D Element (Over the hands) */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="relative w-full h-[50vh] md:h-[60vh] max-w-2xl">
+          {/* Glow effect behind the 3D object */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div
+              className="w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl opacity-60"
+              style={{
+                background: `radial-gradient(circle, ${colors.primary}40, ${colors.secondary}20, transparent)`,
+              }}
+            ></div>
+          </div>
+          
+          {/* 3D <br> Tag - Centered and rotating */}
+          <div className="w-full h-full pointer-events-auto">
+            <BrTag3D
+              fontSize={2.5}
+              color={colors.primary}
+              metalness={0.95}
+              roughness={0.1}
+              floatIntensity={0.08}
+              rotationSpeed={0.5}
+            />
+          </div>
         </div>
       </div>
 
       {/* Bottom decorative icons */}
-      <div className="flex items-center justify-center gap-4 pb-8" style={{ color: colors.muted }}>
+      {/* <div className="flex items-center justify-center gap-4 pb-8 relative z-10" style={{ color: colors.muted }}>
         <span className="text-xs tracking-widest">⊹</span>
         <span className="text-xs tracking-widest">◫</span>
         <span className="text-xs tracking-widest">⊹</span>
         <span className="text-xs tracking-widest">◎</span>
         <span className="text-xs tracking-widest">✓</span>
-      </div>
+      </div> */}
     </section>
   );
 }
