@@ -2,10 +2,9 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import Image from 'next/image';
 import BrTag3D from '@/components/ui/BrTag3D';
+import ShaderImage from '@/components/ui/ShaderImage';
 import { useTheme } from '@/contexts/ThemeContext';
-import adamsCreation from '@/assets/adamsCreationNoBg.png';
 
 export function HeroSection() {
   const textRef = useRef<HTMLDivElement>(null);
@@ -47,15 +46,12 @@ export function HeroSection() {
       className="min-h-screen flex flex-col items-center justify-between px-4 md:px-8 relative overflow-hidden transition-colors"
       style={{ backgroundColor: colors.background }}
     >
-      {/* Background hands image */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none -top-[320px]">
-        <Image
-          src={adamsCreation}
-          alt="Adam's Creation Hands"
-          fill
-          className="object-cover"
-          priority
-          // style={{ filter: theme === 'dark' ? 'brightness(0.7)' : 'brightness(1.2)' }}
+      {/* Background hands image with shaders */}
+      <div className="absolute inset-0 opacity-50 pointer-events-none" style={{ top: '-200px' }}>
+        <ShaderImage
+          src="/adamsCreationNoBg.png"
+          className="w-full h-full"
+          intervalMs={1000}
         />
       </div>
 
