@@ -1,45 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import { useTheme } from '@/contexts/ThemeContext';
 import BrTag3D from '@/components/ui/BrTag3D';
 import ShaderImage from '@/components/ui/ShaderImage';
-import { useTheme } from '@/contexts/ThemeContext';
 
 export function HeroSection() {
-  const textRef = useRef<HTMLDivElement>(null);
-  const subtitleRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLAnchorElement>(null);
   const { theme, colors } = useTheme();
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(textRef.current, {
-        opacity: 0,
-        y: 60,
-        duration: 1.2,
-        ease: 'power3.out',
-      });
-
-      gsap.from(subtitleRef.current, {
-        opacity: 0,
-        y: 30,
-        duration: 1,
-        delay: 0.3,
-        ease: 'power3.out',
-      });
-
-      gsap.from(buttonRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        delay: 0.5,
-        ease: 'power3.out',
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
 
   return (
     <section
@@ -47,11 +13,11 @@ export function HeroSection() {
       style={{ backgroundColor: colors.background }}
     >
       {/* Background hands image with shaders */}
-      <div className="absolute inset-0 opacity-50 pointer-events-none" style={{ top: '-200px' }}>
+      <div className="absolute inset-0 opacity-50 pointer-events-none animate-fade-in animation-delay-1" style={{ top: '-200px' }}>
         <ShaderImage
           src="/adamsCreationNoBg.png"
           className="w-full h-full"
-          intervalMs={1000}
+          intervalMs={22500}
         />
       </div>
 
@@ -111,10 +77,10 @@ export function HeroSection() {
       </div> */}
 
       {/* Center Section - 3D Element (Below the text) */}
-      <div className="absolute inset-0 flex items-end justify-center pointer-events-none pb-24">
+      <div className="absolute inset-0 flex items-end justify-center pointer-events-none pb-24 animate-slide-in-up animation-delay-2">
         <div className="relative w-full h-[60vh] md:h-[70vh] max-w-3xl">
           {/* Glow effect behind the 3D object */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center animate-blur-in animation-delay-3">
             <div
               className="w-64 h-64 md:w-96 md:h-96 rounded-full blur-3xl opacity-60"
               style={{
@@ -125,14 +91,7 @@ export function HeroSection() {
           
           {/* 3D <br> Tag - Centered and rotating */}
           <div className="w-full h-full pointer-events-auto">
-            <BrTag3D
-              fontSize={3.5}
-              color={colors.primary}
-              metalness={0.95}
-              roughness={0.1}
-              floatIntensity={0.08}
-              rotationSpeed={0.5}
-            />
+            <BrTag3D className="w-full h-full" />
           </div>
         </div>
       </div>

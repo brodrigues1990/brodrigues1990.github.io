@@ -63,8 +63,11 @@ function convertToThreeJsFont(font) {
 }
 
 async function main() {
-  const fontPath = path.join(__dirname, '../public/fonts/JetBrainsMono-Bold.ttf');
-  const outputPath = path.join(__dirname, '../public/fonts/JetBrainsMono-Bold.json');
+  const fontPath = process.argv[2] || path.join(__dirname, '../public/fonts/JetBrainsMono-Bold.ttf');
+  
+  // Extract font name from path
+  const fontName = path.basename(fontPath, path.extname(fontPath));
+  const outputPath = path.join(path.dirname(fontPath), `${fontName}.json`);
 
   console.log('Loading font from:', fontPath);
 

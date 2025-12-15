@@ -232,7 +232,7 @@ extend({
 });
 
 // Declare types
-declare global {
+declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
       imageHalftoneShader: any;
@@ -269,12 +269,12 @@ function ShaderPlane({ imageSrc, shaderType }: ShaderPlaneProps) {
     //     return <imageHalftoneShader {...props} />;
     //   case 'glitch':
     //     return <imageGlitchShader {...props} />;
-      case 'scanline':
-        return <imageScanlineShader {...props} />;
-      case 'noise':
-        return <imageNoiseShader {...props} />;
-      case 'pixelate':
-        return <imagePixelateShader {...props} />;
+    //   case 'scanline':
+    //     return <imageScanlineShader {...props} />;
+    //   case 'noise':
+    //     return <imageNoiseShader {...props} />;
+    //   case 'pixelate':
+    //     return <imagePixelateShader {...props} />;
     //   case 'hologram':
     //     return <imageHologramShader {...props} />;
     //   case 'matrix':

@@ -2,9 +2,201 @@
 
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, extend, useThree } from '@react-three/fiber';
-import { Text3D, Center, shaderMaterial, Effects } from '@react-three/drei';
+import { Text3D, Center, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import { useTheme } from '@/contexts/ThemeContext';
+
+// Modern Gradient Liquid shader
+const GradientLiquidShaderMaterial = shaderMaterial(
+  {
+    time: 0,
+    color: new THREE.Color(0.2, 0.0, 0.1),
+    color2: new THREE.Color(0.0, 0.5, 1.0),
+  },
+  // Vertex shader
+  `
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    uniform float time;
+    void main() {
+      vUv = uv;
+      vNormal = normalize(normalMatrix * normal);
+      vPosition = position;
+      vec3 pos = position;
+      pos.y += sin(time * 2.0 + position.x * 3.0) * 0.08;
+      pos.z += cos(time * 1.5 + position.y * 3.0) * 0.08;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    }
+  `,
+  // Fragment shader - Modern Gradient Liquid
+  `
+    uniform float time;
+    uniform vec3 color;
+    uniform vec3 color2;
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    
+    void main() {
+      vec3 light = normalize(vec3(sin(time * 0.5), 1.0, cos(time * 0.5)));
+      float diffuse = max(dot(vNormal, light), 0.0);
+      
+      // Gradient animation
+      float gradient = sin(vUv.x * 3.0 + time * 1.5) * 0.5 + 0.5;
+      gradient = mix(gradient, cos(vUv.y * 3.0 + time * 1.0) * 0.5 + 0.5, 0.5);
+      
+      vec3 finalColor = mix(color, color2, gradient);
+      finalColor *= (0.7 + diffuse * 0.3);
+      finalColor = mix(finalColor, vec3(1.0), diffuse * 0.2);
+      
+      gl_FragColor = vec4(finalColor, 1.0);
+    }
+  `
+);
+
+// Neon Glow shader
+const NeonGlowShaderMaterial = shaderMaterial(
+  {
+    time: 0,
+    color: new THREE.Color(0.0, 1.0, 0.5),
+  },
+  // Vertex shader
+  `
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    uniform float time;
+    void main() {
+      vUv = uv;
+      vNormal = normalize(normalMatrix * normal);
+      vPosition = position;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  // Fragment shader - Neon Glow
+  `
+    uniform float time;
+    uniform vec3 color;
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    
+    void main() {
+      vec3 light = normalize(vec3(1.0, 1.0, 1.0));
+      float diffuse = max(dot(vNormal, light), 0.0);
+      
+      // Fresnel glow effect
+      vec3 viewDir = normalize(cameraPosition - vPosition);
+      float fresnel = pow(1.0 - abs(dot(viewDir, vNormal)), 1.5);
+      
+      // Pulsing glow
+      float pulse = sin(time * 3.0) * 0.5 + 0.5;
+      
+      vec3 finalColor = color * (0.4 + diffuse * 0.6);
+      finalColor += color * fresnel * (0.5 + pulse * 0.5);
+      
+      gl_FragColor = vec4(finalColor, 1.0);
+    }
+  `
+);
+
+// Iridescent shader
+const IridescentShaderMaterial = shaderMaterial(
+  {
+    time: 0,
+    color: new THREE.Color(1.0, 0.5, 1.0),
+  },
+  // Vertex shader
+  `
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    varying vec3 vViewDir;
+    void main() {
+      vUv = uv;
+      vNormal = normalize(normalMatrix * normal);
+      vPosition = position;
+      vViewDir = normalize(-position);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  // Fragment shader - Iridescent
+  `
+    uniform float time;
+    uniform vec3 color;
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    varying vec3 vViewDir;
+    
+    void main() {
+      float fresnel = pow(1.0 - abs(dot(vViewDir, vNormal)), 2.0);
+      
+      // Rainbow shifting based on position and time
+      vec3 rainbow = vec3(
+        sin(vUv.x * 5.0 + time * 2.0) * 0.5 + 0.5,
+        sin(vUv.y * 5.0 + time * 1.5 + 2.0) * 0.5 + 0.5,
+        sin((vUv.x + vUv.y) * 5.0 + time * 1.0 + 4.0) * 0.5 + 0.5
+      );
+      
+      vec3 finalColor = mix(color, rainbow, fresnel * 0.8);
+      finalColor += rainbow * fresnel * 0.3;
+      
+      gl_FragColor = vec4(finalColor, 1.0);
+    }
+  `
+);
+
+// Fluid Flow shader
+const FluidFlowShaderMaterial = shaderMaterial(
+  {
+    time: 0,
+    color: new THREE.Color(0.0, 0.7, 1.0),
+  },
+  // Vertex shader
+  `
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    uniform float time;
+    void main() {
+      vUv = uv;
+      vNormal = normalize(normalMatrix * normal);
+      vPosition = position;
+      vec3 pos = position;
+      pos.x += sin(time * 2.5 + position.y * 4.0) * 0.05;
+      pos.z += cos(time * 2.0 + position.x * 4.0) * 0.05;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    }
+  `,
+  // Fragment shader - Fluid Flow
+  `
+    uniform float time;
+    uniform vec3 color;
+    varying vec2 vUv;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    
+    float noise(vec3 p) {
+      return sin(p.x * 10.0) * sin(p.y * 10.0) * sin(p.z * 10.0) * 0.5 + 0.5;
+    }
+    
+    void main() {
+      vec3 light = normalize(vec3(cos(time * 0.5), 1.0, sin(time * 0.5)));
+      float diffuse = max(dot(vNormal, light), 0.3);
+      
+      // Flowing patterns
+      float flow = sin(vUv.x * 5.0 - time * 3.0) * cos(vUv.y * 5.0 - time * 2.0);
+      flow = abs(flow);
+      
+      vec3 finalColor = color * (0.6 + diffuse * 0.4);
+      finalColor += color * flow * 0.3;
+      
+      gl_FragColor = vec4(finalColor, 1.0);
+    }
+  `
+);
 
 // Custom shader materials
 const HalftoneShaderMaterial = shaderMaterial(
@@ -318,10 +510,14 @@ extend({
   PixelateShaderMaterial,
   HologramShaderMaterial,
   MatrixShaderMaterial,
+  GradientLiquidShaderMaterial,
+  NeonGlowShaderMaterial,
+  IridescentShaderMaterial,
+  FluidFlowShaderMaterial,
 });
 
 // Declare types for custom materials
-declare global {
+declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
       halftoneShaderMaterial: any;
@@ -331,6 +527,10 @@ declare global {
       pixelateShaderMaterial: any;
       hologramShaderMaterial: any;
       matrixShaderMaterial: any;
+      gradientLiquidShaderMaterial: any;
+      neonGlowShaderMaterial: any;
+      iridescentShaderMaterial: any;
+      fluidFlowShaderMaterial: any;
     }
   }
 }
@@ -338,12 +538,15 @@ declare global {
 // Available fonts (you can add more font paths here)
 const FONTS = [
   '/fonts/JetBrainsMono-Bold.json',
-  // Add more fonts as you create them
+  '/fonts/arialbd.json',
+  '/fonts/cambriab.json',
+  '/fonts/impact.json',
+  '/fonts/consolab.json',
 ];
 
 // Shader types
-type ShaderType = 'halftone' | 'glitch' | 'scanline' | 'noise' | 'pixelate' | 'hologram' | 'matrix';
-const SHADERS: ShaderType[] = ['halftone', 'glitch', 'scanline', 'noise', 'pixelate', 'hologram', 'matrix'];
+type ShaderType = 'halftone' | 'glitch' | 'scanline' | 'noise' | 'pixelate' | 'hologram' | 'matrix' | 'gradient' | 'neon' | 'iridescent' | 'fluid';
+const SHADERS: ShaderType[] = ['gradient', 'neon', 'iridescent', 'fluid', 'hologram', 'glitch', 'matrix'];
 
 interface SpinningTextProps {
   font: string;
@@ -358,7 +561,10 @@ function SpinningText({ font, color, shaderType }: SpinningTextProps) {
 
   useFrame((state, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.5;
+      // Smooth rotation with mouse-like interaction
+      groupRef.current.rotation.y += delta * 0.6;
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2 + tiltAngle;
+      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.15;
     }
     if (materialRef.current) {
       materialRef.current.time = state.clock.elapsedTime;
@@ -369,22 +575,22 @@ function SpinningText({ font, color, shaderType }: SpinningTextProps) {
 
   const renderMaterial = () => {
     switch (shaderType) {
-      case 'halftone':
-        return <halftoneShaderMaterial ref={materialRef} color={threeColor} />;
-      case 'glitch':
-        return <glitchShaderMaterial ref={materialRef} color={threeColor} />;
-      case 'scanline':
-        return <scanlineShaderMaterial ref={materialRef} color={threeColor} />;
-      case 'noise':
-        return <noiseShaderMaterial ref={materialRef} color={threeColor} />;
-      case 'pixelate':
-        return <pixelateShaderMaterial ref={materialRef} color={threeColor} />;
+      case 'gradient':
+        return <gradientLiquidShaderMaterial ref={materialRef} color={threeColor} color2={new THREE.Color(0.1, 0.5, 1.0)} />;
+      case 'neon':
+        return <neonGlowShaderMaterial ref={materialRef} color={threeColor} />;
+      case 'iridescent':
+        return <iridescentShaderMaterial ref={materialRef} color={threeColor} />;
+      case 'fluid':
+        return <fluidFlowShaderMaterial ref={materialRef} color={threeColor} />;
       case 'hologram':
         return <hologramShaderMaterial ref={materialRef} color={threeColor} transparent />;
+      case 'glitch':
+        return <glitchShaderMaterial ref={materialRef} color={threeColor} />;
       case 'matrix':
         return <matrixShaderMaterial ref={materialRef} color={threeColor} />;
       default:
-        return <halftoneShaderMaterial ref={materialRef} color={threeColor} />;
+        return <gradientLiquidShaderMaterial ref={materialRef} color={threeColor} color2={new THREE.Color(0.1, 0.5, 1.0)} />;
     }
   };
 
@@ -393,11 +599,11 @@ function SpinningText({ font, color, shaderType }: SpinningTextProps) {
       <Center>
         <Text3D
           font={font}
-          size={1}
-          height={0.2}
+          size={1.2}
+          height={0.25}
           curveSegments={12}
           bevelEnabled
-          bevelThickness={0.02}
+          bevelThickness={0.03}
           bevelSize={0.02}
           bevelOffset={0}
           bevelSegments={5}
@@ -419,12 +625,12 @@ export default function BrTag3D({ className }: BrTag3DProps) {
   const [currentShaderIndex, setCurrentShaderIndex] = useState(0);
   const [currentFontIndex, setCurrentFontIndex] = useState(0);
 
-  // Cycle through shaders and fonts every 1000ms
+  // Cycle through shaders and fonts every 1500ms
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentShaderIndex((prev) => (prev + 1) % SHADERS.length);
       setCurrentFontIndex((prev) => (prev + 1) % FONTS.length);
-    }, 1000);
+    }, 1500);
 
     return () => clearInterval(interval);
   }, []);
@@ -433,13 +639,14 @@ export default function BrTag3D({ className }: BrTag3DProps) {
     <div className={className} style={{ width: '100%', height: '100%', minHeight: '200px' }}>
       <Canvas
         camera={{ position: [0, 0, 5], fov: 50 }}
-        gl={{ antialias: true }}
+        gl={{ antialias: true, alpha: true }}
       >
-        {/* Lighting */}
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <directionalLight position={[-10, -10, -5]} intensity={0.5} />
-        <pointLight position={[0, 5, 0]} intensity={0.5} />
+        {/* Advanced Lighting setup */}
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[10, 10, 5]} intensity={1.2} color="#ffffff" />
+        <directionalLight position={[-10, -10, -5]} intensity={0.6} color="#4a90ff" />
+        <pointLight position={[0, 5, 0]} intensity={0.8} color="#ff00ff" />
+        <pointLight position={[5, 0, 5]} intensity={0.5} color="#00ffff" />
 
         {/* 3D Text with rotating shaders */}
         <SpinningText 
