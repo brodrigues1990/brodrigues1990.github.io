@@ -284,23 +284,29 @@ function ShaderPlane({ imageSrc, shaderType }: ShaderPlaneProps) {
     }
   };
 
-  // Calculate dimensions to cover the viewport while maintaining aspect ratio
+  // Calculate dimensions to cover the viewport while maintaining aspect ratio (Cover strategy)
   const imageAspect = texture.image ? texture.image.width / texture.image.height : 1;
   const viewportAspect = viewport.width / viewport.height;
   
   let planeWidth, planeHeight;
   if (imageAspect > viewportAspect) {
-    // Image is wider - fit to height and overflow width
+    // Image is wider than viewport - fit to height and overflow width
     planeHeight = viewport.height;
     planeWidth = viewport.height * imageAspect;
   } else {
-    // Image is taller - fit to width and overflow height
+    // Image is taller than viewport - fit to width and overflow height
     planeWidth = viewport.width;
     planeHeight = viewport.width / imageAspect;
   }
 
+  // Calculate offset to position image 200px from bottom
+  // Convert 200px to Three.js units based on viewport height
+  const bottomOffsetPx = -170;
+  const bottomOffsetUnits = (bottomOffsetPx / size.height) * viewport.height;
+  const yOffset = -bottomOffsetUnits;
+
   return (
-    <mesh position={[0, 0, 0]}>
+    <mesh position={[0, yOffset, 0]}>
       <planeGeometry args={[planeWidth, planeHeight]} />
       {renderMaterial()}
     </mesh>

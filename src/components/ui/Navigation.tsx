@@ -6,7 +6,7 @@ import { ThemeSwitch } from './ThemeSwitch';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export function Navigation() {
-  const navRef = useRef<HTMLNavElement>(null);
+  const navRef = useRef<HTMLElement>(null);
   const { theme, colors } = useTheme();
 
   useEffect(() => {
