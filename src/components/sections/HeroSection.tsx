@@ -1,11 +1,44 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { useTheme } from '@/contexts/ThemeContext';
 import BrTag3D from '@/components/ui/BrTag3D';
 import ShaderImage from '@/components/ui/ShaderImage';
 
 export function HeroSection() {
   const { theme, colors } = useTheme();
+  const textRef = useRef<HTMLDivElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLAnchorElement>(null);
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(textRef.current, {
+        opacity: 0,
+        y: 60,
+        duration: 1.2,
+        ease: 'power3.out',
+      });
+
+      gsap.from(subtitleRef.current, {
+        opacity: 0,
+        y: 30,
+        duration: 1,
+        delay: 0.3,
+        ease: 'power3.out',
+      });
+
+      gsap.from(buttonRef.current, {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        delay: 0.5,
+        ease: 'power3.out',
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
@@ -22,7 +55,7 @@ export function HeroSection() {
       </div>
 
       {/* Top Section - Text */}
-      {/* <div className="flex-1 flex flex-col items-center justify-start pt-32 pb-8 relative z-10">
+      <div className="flex-1 flex flex-col items-center justify-start pt-32 pb-8 relative z-10">
         <div ref={textRef} className="text-center mb-6">
           <h1
             className="text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight"
@@ -34,15 +67,15 @@ export function HeroSection() {
           </h1>
         </div>
 
-        <div ref={subtitleRef} className="text-center max-w-xl mb-8">
+        {/* <div ref={subtitleRef} className="text-center max-w-xl mb-8">
           <p className="text-sm md:text-base leading-relaxed" style={{ color: colors.muted }}>
             an unlikely alliance - where human intuition
             <br />
             and algorithmic precision move as one
           </p>
-        </div>
+        </div> */}
 
-        <a
+        {/* <a
           ref={buttonRef}
           href="#showcase"
           className="inline-flex items-center gap-2 px-6 py-3 border rounded-full text-sm transition-all duration-300 group"
@@ -73,8 +106,8 @@ export function HeroSection() {
               d="M17 8l4 4m0 0l-4 4m4-4H3"
             />
           </svg>
-        </a>
-      </div> */}
+        </a> */}
+      </div>
 
       {/* Center Section - 3D Element (Below the text) */}
       <div className="absolute inset-0 flex items-end justify-center pointer-events-none pb-24 animate-slide-in-up animation-delay-2">
