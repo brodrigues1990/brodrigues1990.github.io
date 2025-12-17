@@ -4,7 +4,8 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useTheme } from '@/contexts/ThemeContext';
 import BrTag3D from '@/components/ui/BrTag3D';
-import ShaderImage from '@/components/ui/ShaderImage';
+import GridTunnel from '@/components/ui/GridTunnel';
+import ShaderImage from '../ui/ShaderImage';
 
 export function HeroSection() {
   const { theme, colors } = useTheme();
@@ -42,18 +43,23 @@ export function HeroSection() {
 
   return (
     <section
-      className="min-h-screen flex flex-col items-center justify-between px-4 md:px-8 relative overflow-hidden transition-colors"
+      id='hero'
+      className="min-h-screen flex flex-col items-center justify-between opacity-60 px-4 md:px-8 relative z-0 overflow-hidden transition-colors"
       style={{ backgroundColor: colors.background }}
     >
-      {/* Background hands image with shaders */}
-      <div className="absolute inset-0 opacity-50 pointer-events-none animate-fade-in animation-delay-1" style={{ top: '-200px' }}>
-        <ShaderImage
+      {/* Background Grid Tunnel */}
+      <GridTunnel
+        gridColor={theme === 'dark' ? '#e5e5e5' : '#333333'}
+        bgColor={colors.background}
+        speed={1.5}
+        gridSpacing={2}
+        tunnelDepth={60}
+      />
+      <ShaderImage
           src="/adamsCreationNoBg.png"
           className="w-full h-full"
           intervalMs={22500}
         />
-      </div>
-
       {/* Top Section - Text */}
       <div className="flex-1 flex flex-col items-center justify-start pt-32 pb-8 relative z-10">
         <div ref={textRef} className="text-center mb-6">
@@ -121,7 +127,7 @@ export function HeroSection() {
               }}
             ></div>
           </div>
-          
+
           {/* 3D <br> Tag - Centered and rotating */}
           <div className="w-full h-full pointer-events-auto">
             <BrTag3D className="w-full h-full" />
