@@ -267,18 +267,18 @@ function ShaderPlane({ imageSrc, shaderType }: ShaderPlaneProps) {
     switch (shaderType) {
     //   case 'halftone':
     //     return <imageHalftoneShader {...props} />;
-    //   case 'glitch':
-    //     return <imageGlitchShader {...props} />;
+      case 'glitch':
+        return <imageGlitchShader {...props} />;
     //   case 'scanline':
     //     return <imageScanlineShader {...props} />;
-    //   case 'noise':
-    //     return <imageNoiseShader {...props} />;
+      case 'noise':
+        return <imageNoiseShader {...props} />;
     //   case 'pixelate':
     //     return <imagePixelateShader {...props} />;
     //   case 'hologram':
     //     return <imageHologramShader {...props} />;
-    //   case 'matrix':
-    //     return <imageMatrixShader {...props} />;
+      // case 'matrix':
+      //   return <imageMatrixShader {...props} />;
       default:
         return <imageGlitchShader {...props} />;
     }
@@ -314,15 +314,19 @@ interface ShaderImageProps {
 }
 
 export default function ShaderImage({ src, className, intervalMs = 200 }: ShaderImageProps) {
-  const [currentShaderIndex, setCurrentShaderIndex] = useState(0);
+  const [activeShader, setActiveShader] = useState<ShaderType>('noise');
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentShaderIndex((prev) => (prev + 1) % SHADERS.length);
-    }, intervalMs);
+    let timeout: NodeJS.Timeout;
 
-    return () => clearInterval(interval);
-  }, [intervalMs]);
+    if (activeShader === 'noise') {
+      timeout = setTimeout(() => setActiveShader('glitch'), 5000);
+    } else {
+      timeout = setTimeout(() => setActiveShader('noise'), 1000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [activeShader]);
 
   return (
     <div className={className} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
@@ -332,7 +336,7 @@ export default function ShaderImage({ src, className, intervalMs = 200 }: Shader
         style={{ background: 'transparent', width: '100%', height: '100%' }}
         orthographic={false}
       >
-        <ShaderPlane imageSrc={src} shaderType={SHADERS[currentShaderIndex]} />
+        <ShaderPlane imageSrc={src} shaderType={activeShader} />
       </Canvas>
     </div>
   );
