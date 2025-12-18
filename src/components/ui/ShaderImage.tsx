@@ -301,7 +301,7 @@ function ShaderPlane({ imageSrc, shaderType }: ShaderPlaneProps) {
 
   // Calculate offset to position image 200px from bottom
   // Convert 200px to Three.js units based on viewport height
-  const bottomOffsetPx = -170;
+  const bottomOffsetPx = -135;
   const bottomOffsetUnits = (bottomOffsetPx / size.height) * viewport.height;
   const yOffset = -bottomOffsetUnits;
 
@@ -322,17 +322,17 @@ interface ShaderImageProps {
 export default function ShaderImage({ src, className, intervalMs = 200 }: ShaderImageProps) {
   const [activeShader, setActiveShader] = useState<ShaderType>('noise');
 
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
+  // useEffect(() => {
+  //   let timeout: NodeJS.Timeout;
 
-    if (activeShader === 'noise') {
-      timeout = setTimeout(() => setActiveShader('glitch'), 5000);
-    } else {
-      timeout = setTimeout(() => setActiveShader('noise'), 1000);
-    }
+  //   if (activeShader === 'noise') {
+  //     timeout = setTimeout(() => setActiveShader('glitch'), 5000);
+  //   } else {
+  //     timeout = setTimeout(() => setActiveShader('noise'), 1000);
+  //   }
 
-    return () => clearTimeout(timeout);
-  }, [activeShader]);
+  //   return () => clearTimeout(timeout);
+  // }, [activeShader]);
 
   return (
     <div className={className} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>

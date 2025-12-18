@@ -57,7 +57,7 @@ export function HeroSection() {
       />
       <ShaderImage
           src="/adamsCreationNoBg.png"
-          className="w-full h-full"
+          className="hidden md:block w-full h-full"
           intervalMs={22500}
         />
       {/* Top Section - Text */}

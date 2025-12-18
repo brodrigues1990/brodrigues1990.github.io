@@ -628,8 +628,8 @@ export default function BrTag3D({ className }: BrTag3DProps) {
   // Cycle through shaders and fonts every 1500ms
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentShaderIndex((prev) => (prev + 1) % SHADERS.length);
-      setCurrentFontIndex((prev) => (prev + 1) % FONTS.length);
+      // setCurrentShaderIndex((prev) => (prev + 1) % SHADERS.length);
+      // setCurrentFontIndex((prev) => (prev + 1) % FONTS.length);
     }, 1500);
 
     return () => clearInterval(interval);
